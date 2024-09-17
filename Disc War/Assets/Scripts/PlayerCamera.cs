@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCam : MonoBehaviour
 {
     public float sensX;
     public float sensY;
@@ -10,7 +10,6 @@ public class PlayerCamera : MonoBehaviour
     public Transform orientation;
 
     float xRotation;
-    float yRotation;
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -22,16 +21,14 @@ public class PlayerCamera : MonoBehaviour
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
-        yRotation += mouseX;
-
         xRotation -= mouseY;
 
         // Prevents camera going beyond feet-to-apex of sky view
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         // Camera Rotation and Orientation
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        orientation.Rotate(Vector3.up * mouseX);
         
     }
 }

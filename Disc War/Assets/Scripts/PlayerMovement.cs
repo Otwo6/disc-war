@@ -4,42 +4,39 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [Header("Movement")]
-    public float moveSpeed;
+    public CharacterController controller;
 
-    public Transform orientation;
+    public float moveSpeed = 20f;
+    public float gravity = -9.81f; // Standard gravity constant in meters/s^2
+    public float jumpHeight;
 
-    float horizontalInput;
-    float verticalInput;
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+    Vector3 velocity;
+    bool isGrounded;
 
-    Vector3 moveDirection;
+    void Update() {
 
-    Rigidbody rb;
-    private void Start() {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Prevents body rotation when moving
-    }
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if (isGrounded && velocity.y < 0) {
+            velocity.y = -2f;
+        }
 
-    private void Update() {
-        MyInput();
-    }
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
-    private void FixedUpdate() {
-        MovePlayer();
-    }
+        Vector3 move = (transform.right * x) + (transform.forward * z);
 
-    // Update is called once per frame
-    private void MyInput() {
-        // Receives user input
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-    }
+        controller.Move(move * moveSpeed * Time.deltaTime);
 
-    private void MovePlayer() {
-        // Calculates movement direction
-        moveDirection = (orientation.forward * verticalInput) + (orientation.right * horizontalInput);
+        // Jump Movement
+        if (Input.GetButtonDown("Jump") && isGrounded) {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+        } 
 
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        // Gravity Implementation
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime); // Resembles ö_y = (g/2) * t^2 
     }
 }
