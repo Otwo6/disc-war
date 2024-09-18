@@ -9,18 +9,21 @@ public class DiscScript : MonoBehaviour
     
     void Update()
     {
-        transform.position += discSpeed * forwardDirection;
+        transform.position += discSpeed * forwardDirection * Time.deltaTime; // Use Time.deltaTime for frame rate independence
     }
 
     void OnCollisionEnter(Collision col)
     {
-		Debug.DrawRay(transform.position, forwardDirection, Color.blue);
-        RaycastHit hit;
-
-        if(Physics.Raycast(transform.position, forwardDirection, out hit))
-        {
-            forwardDirection = hit.normal;
-        }
+        Debug.DrawRay(transform.position, forwardDirection, Color.blue);
+        
+        // Calculate the normal of the collision
+        Vector3 collisionNormal = col.contacts[0].normal;
+        
+        // Reflect the forward direction based on the collision normal
+        forwardDirection = Vector3.Reflect(forwardDirection, collisionNormal);
+        
+        // Normalize the direction to maintain consistent speed
+        forwardDirection.Normalize();
     }
 
     public void SetForwardDirection(Vector3 newForward)

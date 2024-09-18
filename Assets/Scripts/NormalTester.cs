@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class NormalTester : MonoBehaviour
 {
+    public Vector3 visDirection;
+
     void Update()
     {
+
+        Debug.DrawRay(transform.position, visDirection, Color.green);
         
         if(Input.GetKeyDown("f"))
         {
