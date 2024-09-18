@@ -646,8 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54893a428d2006f48bcf77d108d87307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 1000
-  sensY: 1000
+  sensX: 750
+  sensY: 750
   orientation: {fileID: 2122504888}
 --- !u!1 &1258855313
 GameObject:
@@ -1112,6 +1112,7 @@ MonoBehaviour:
   throwLocation: {fileID: 1258855313}
   camera: {fileID: 963194225}
   handDisc: {fileID: 827295759}
+  callBackWaitTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
