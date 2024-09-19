@@ -8,6 +8,8 @@ public class DiscScript : MonoBehaviour
     Vector3 forwardDirection = new Vector3(1f, 0f, 0f);
 
     public bool inPlayerRange = false;
+
+    public ParticleSystem particleSystem;
     
     void Update()
     {
@@ -16,6 +18,8 @@ public class DiscScript : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
+        particleSystem.Play();
+        
         Debug.DrawRay(transform.position, forwardDirection, Color.blue);
         
         // Calculate the normal of the collision
