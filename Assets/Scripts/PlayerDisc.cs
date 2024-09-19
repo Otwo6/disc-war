@@ -15,19 +15,34 @@ public class PlayerDisc : MonoBehaviour
 
 	void Update()
 	{
-		if(Input.GetKeyDown("f"))
+		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			if(hasDisc)
 			{
 				handDisc.active = false;
 				disc = Instantiate(discPrefab, throwLocation.transform.position, transform.rotation).GetComponent<DiscScript>();
-				disc.SetForwardDirection(camera.transform.forward);
+				if(disc != null)
+				{
+					disc.SetForwardDirection(camera.transform.forward);
+				}
 				hasDisc = false;
 			}
 			else
 			{
-				Destroy(disc.gameObject);
-				StartCoroutine(CallBackDisc());
+				if(disc.inPlayerRange)
+				{
+					Destroy(disc.gameObject);
+					handDisc.active = true;
+					hasDisc = true;
+				}
+				else
+				{
+					if(disc != null)
+					{
+						StartCoroutine(CallBackDisc());
+						Destroy(disc.gameObject);
+					}
+				}
 			}
 		}
 	}

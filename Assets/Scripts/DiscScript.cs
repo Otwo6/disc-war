@@ -6,6 +6,8 @@ public class DiscScript : MonoBehaviour
 {
     [SerializeField] float discSpeed = 10f;
     Vector3 forwardDirection = new Vector3(1f, 0f, 0f);
+
+    public bool inPlayerRange = false;
     
     void Update()
     {
@@ -29,5 +31,23 @@ public class DiscScript : MonoBehaviour
     public void SetForwardDirection(Vector3 newForward)
     {
         forwardDirection = newForward;
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if(col.gameObject.tag == "Player")
+        {
+            inPlayerRange = true;
+            print("in");
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if(col.gameObject.tag == "Player")
+        {
+            inPlayerRange = false;
+            print("out");
+        }
     }
 }
