@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerDisc : MonoBehaviour
+public class PlayerDisc : NetworkBehaviour
 {
 	[SerializeField] GameObject discPrefab;
 	[SerializeField] GameObject throwLocation;
@@ -15,6 +16,8 @@ public class PlayerDisc : MonoBehaviour
 
 	void Update()
 	{
+		if(!IsOwner) return;
+
 		if(Input.GetKeyDown(KeyCode.Mouse0))
 		{
 			if(hasDisc)
@@ -31,9 +34,9 @@ public class PlayerDisc : MonoBehaviour
 			{
 				if(disc.inPlayerRange)
 				{
-					Destroy(disc.gameObject);
+					/*Destroy(disc.gameObject);
 					handDisc.active = true;
-					hasDisc = true;
+					hasDisc = true;*/
 				}
 				else
 				{
@@ -42,6 +45,19 @@ public class PlayerDisc : MonoBehaviour
 						StartCoroutine(CallBackDisc());
 						Destroy(disc.gameObject);
 					}
+				}
+			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.Mouse1))
+		{
+			if(!hasDisc)
+			{
+				if(disc.inPlayerRange)
+				{
+					Destroy(disc.gameObject);
+					handDisc.active = true;
+					hasDisc = true;
 				}
 			}
 		}
