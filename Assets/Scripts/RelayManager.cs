@@ -20,6 +20,9 @@ public class RelayManager : MonoBehaviour
     [SerializeField] TMP_InputField joinInput;
     [SerializeField] TextMeshProUGUI codeText;
 
+	[SerializeField] GameObject joinWidget;
+	[SerializeField] GameObject playerHUD;
+
     // Start is called before the first frame update
     async void Start() {
         await UnityServices.InitializeAsync();
@@ -34,6 +37,8 @@ public class RelayManager : MonoBehaviour
     async void CreateRelay() {
         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
         string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+		joinWidget.active = false;
+		playerHUD.active = true;
         codeText.text = "Code: " + joinCode; 
 
         var relayServerData = new RelayServerData(allocation, "dtls");
