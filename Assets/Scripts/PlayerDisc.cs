@@ -74,11 +74,7 @@ public class PlayerDisc : NetworkBehaviour
         var networkObject = discInstance.GetComponent<NetworkObject>();
         networkObject.Spawn(); // This ensures it gets networked
 
-        disc = discInstance.GetComponent<DiscScript>();
-        if (disc != null)
-        {
-            disc.SetForwardDirection(camera.transform.forward);
-        }
+        NotifyClientsOfDiscClientRpc(networkObject.NetworkObjectId, throwLocation.transform.position, transform.rotation);
     }
 
     private void DestroyDisc(DiscScript discToDestroy)
@@ -88,6 +84,25 @@ public class PlayerDisc : NetworkBehaviour
         {
             discToDestroy.gameObject.GetComponent<NetworkObject>().Despawn(); // Despawn the network object
             disc = null; // Clear reference
+        }
+    }
+
+	[ClientRpc]
+    private void NotifyClientsOfDiscClientRpc(ulong networkObjectId, Vector3 position, Quaternion rotation)
+    {
+        // Find the disc on the client using its NetworkObjectId
+        var networkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
+        if (networkObject != null)
+        {
+            disc = networkObject.GetComponent<DiscScript>();
+            if (disc != null)
+            {
+                // Set its position and rotation
+                disc.transform.position = position;
+                disc.transform.rotation = rotation;
+                // You might also want to set its forward direction if needed
+                disc.SetForwardDirection(camera.transform.forward);
+            }
         }
     }
 }
