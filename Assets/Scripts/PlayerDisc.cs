@@ -39,7 +39,7 @@ public class PlayerDisc : NetworkBehaviour
 					if(disc != null)
 					{
 						StartCoroutine(CallBackDisc());
-						Destroy(disc.gameObject);
+						DestroyDisc(disc);
 					}
 				}
 			}
