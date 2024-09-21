@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 285258015
+  GlobalObjectIdHash: 3776374676
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discPrefab: {fileID: 4789469755088489902, guid: 18c153f1f7f4c4e40b37dadec156580a, type: 3}
-  throwLocation: {fileID: 8034937842328055115}
+  throwLocation: {fileID: 331696939330279144}
   camera: {fileID: 5441019032569591077}
   handDisc: {fileID: 3956593439889573014}
   callBackWaitTime: 1
