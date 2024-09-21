@@ -23,11 +23,7 @@ public class PlayerDisc : NetworkBehaviour
 			if(hasDisc)
 			{
 				handDisc.active = false;
-				disc = Instantiate(discPrefab, throwLocation.transform.position, transform.rotation).GetComponent<DiscScript>();
-				if(disc != null)
-				{
-					disc.SetForwardDirection(camera.transform.forward);
-				}
+				SpawnDiscServerRpc();
 				hasDisc = false;
 			}
 			else
@@ -55,7 +51,7 @@ public class PlayerDisc : NetworkBehaviour
 			{
 				if(disc.inPlayerRange)
 				{
-					Destroy(disc.gameObject);
+					DestroyDisc(disc);
 					handDisc.active = true;
 					hasDisc = true;
 				}
@@ -69,4 +65,29 @@ public class PlayerDisc : NetworkBehaviour
 		handDisc.active = true;
 		hasDisc = true;
 	}
+
+	[ServerRpc]
+    private void SpawnDiscServerRpc()
+    {
+        // Instantiate the disc on the server and then spawn it
+        var discInstance = Instantiate(discPrefab, throwLocation.transform.position, transform.rotation);
+        var networkObject = discInstance.GetComponent<NetworkObject>();
+        networkObject.Spawn(); // This ensures it gets networked
+
+        disc = discInstance.GetComponent<DiscScript>();
+        if (disc != null)
+        {
+            disc.SetForwardDirection(camera.transform.forward);
+        }
+    }
+
+    private void DestroyDisc(DiscScript discToDestroy)
+    {
+        // This should be networked if you want it to destroy for all clients
+        if (discToDestroy != null)
+        {
+            discToDestroy.gameObject.GetComponent<NetworkObject>().Despawn(); // Despawn the network object
+            disc = null; // Clear reference
+        }
+    }
 }
