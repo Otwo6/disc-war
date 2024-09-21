@@ -21,9 +21,12 @@ public class PlayerDisc : NetworkBehaviour
         {
             if (hasDisc)
             {
-                handDisc.SetActive(false);
-                SpawnDiscServerRpc(); // Call the RPC to spawn the disc
-                hasDisc = false;
+				if(disc == null)
+				{
+					handDisc.SetActive(false);
+    	            SpawnDiscServerRpc(); // Call the RPC to spawn the disc
+	                hasDisc = false;
+				}
             }
             else
             {
