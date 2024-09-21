@@ -12,14 +12,26 @@ public class PlayerCam : NetworkBehaviour
 
     float xRotation;
 
+    public Camera cam;
+
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (!IsOwner) {
+            cam.enabled = false;
+        }
     }
 
     private void Update() {
-        if(!IsOwner) return;
-        
+
+        if (!IsOwner) return;
+
+        // Ensure the camera is enabled for the owner
+        if (!cam.enabled) {
+            cam.enabled = true;
+        }
+
         // Mouse Input
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
