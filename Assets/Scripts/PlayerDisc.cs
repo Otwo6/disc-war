@@ -11,7 +11,7 @@ public class PlayerDisc : NetworkBehaviour
 	[SerializeField] GameObject handDisc;
 	[SerializeField] float callBackWaitTime;
 
-	DiscScript disc;
+	public DiscScript disc;
 	bool hasDisc = true;
 
 	void Update()
