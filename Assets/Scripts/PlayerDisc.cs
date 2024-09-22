@@ -12,20 +12,22 @@ public class PlayerDisc : NetworkBehaviour
 
     private DiscScript disc;
     private bool hasDisc = true;
+	private bool canThrow = true;
 
     void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && canThrow)
         {
-            if (hasDisc)
+			if (hasDisc)
             {
 				if(disc == null)
 				{
 					handDisc.SetActive(false);
     	            SpawnDiscServerRpc(); // Call the RPC to spawn the disc
 	                hasDisc = false;
+					StartCoroutine(DelayInput());
 				}
             }
             else
@@ -38,6 +40,7 @@ public class PlayerDisc : NetworkBehaviour
                 {
                     StartCoroutine(CallBackDisc());
                     RequestDespawnServerRpc(); // Call to request despawn on server
+					StartCoroutine(DelayInput());
                 }
             }
         }
@@ -101,4 +104,12 @@ public class PlayerDisc : NetworkBehaviour
         handDisc.SetActive(true);
         hasDisc = true;
     }
+
+	private IEnumerator DelayInput()
+	{
+		// Used to prevent spamming
+		canThrow = false;
+		yield return new WaitForSeconds(1f);
+		canThrow = true;
+	}
 }

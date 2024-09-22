@@ -39,7 +39,7 @@ public class RelayManager : MonoBehaviour
         string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 		joinWidget.active = false;
 		playerHUD.active = true;
-        codeText.text = "Code: " + joinCode; 
+		codeText.text = "Code: " + joinCode; 
 
         var relayServerData = new RelayServerData(allocation, "dtls");
 
@@ -54,5 +54,8 @@ public class RelayManager : MonoBehaviour
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
         NetworkManager.Singleton.StartClient();
+		joinWidget.active = false;
+		playerHUD.active = true;
+		codeText.text = "Code: " + joinCode; 
     }
 }
