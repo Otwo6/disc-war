@@ -14,7 +14,13 @@ public class PlayerDisc : NetworkBehaviour
     private bool hasDisc = true;
 	private bool canThrow = true;
 
-
+    void Start()
+    {
+        if(GameObject.FindGameObjectsWithTag("Player") != null)
+        {
+            print("Im number two");
+        }
+    }
 
     void Update()
     {
