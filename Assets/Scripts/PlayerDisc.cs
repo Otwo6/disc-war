@@ -67,17 +67,18 @@ public class PlayerDisc : NetworkBehaviour
     [ServerRpc]
     private void SpawnDiscServerRpc()
     {
+        Debug.Log("Spawning disc on server.");
         var discInstance = Instantiate(discPrefab, throwLocation.position, transform.rotation);
         var networkObject = discInstance.GetComponent<NetworkObject>();
-        networkObject.Spawn(); // This ensures it gets networked
+        networkObject.Spawn();
 
-        // Notify clients of the disc
         NotifyClientsOfDiscClientRpc(networkObject.NetworkObjectId, throwLocation.position, transform.rotation);
     }
 
     [ClientRpc]
     private void NotifyClientsOfDiscClientRpc(ulong networkObjectId, Vector3 position, Quaternion rotation)
     {
+        Debug.Log("Client receiving disc spawn notification for ID: " + networkObjectId);
         var networkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
         if (networkObject != null)
         {
@@ -87,7 +88,12 @@ public class PlayerDisc : NetworkBehaviour
                 disc.transform.position = position;
                 disc.transform.rotation = rotation;
                 disc.SetForwardDirection(camera.transform.forward);
+                Debug.Log("Disc spawned at: " + position);
             }
+        }
+        else
+        {
+            Debug.LogError("Network object not found for ID: " + networkObjectId);
         }
     }
 
