@@ -14,12 +14,11 @@ public class PlayerDisc : NetworkBehaviour
     private bool hasDisc = true;
 	private bool canThrow = true;
 
+	private PlayerColorScript colorScript;
+
     void Start()
     {
-        if(GameObject.FindGameObjectsWithTag("Player") != null)
-        {
-            print("Im number two LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        }
+		colorScript = GetComponentInParent<PlayerColorScript>();
     }
 
     void Update()
@@ -69,6 +68,9 @@ public class PlayerDisc : NetworkBehaviour
     {
         Debug.Log("Spawning disc on server.");
         var discInstance = Instantiate(discPrefab, throwLocation.position, transform.rotation);
+		
+		colorScript.ChangeDiscColor(discInstance);
+
         var networkObject = discInstance.GetComponent<NetworkObject>();
         networkObject.Spawn();
 

@@ -10,6 +10,8 @@ public class DiscScript : MonoBehaviour
     public bool inPlayerRange = false;
 
     public ParticleSystem particleSystem;
+	
+	private bool canHit = true;
     
     void Update()
     {
@@ -18,23 +20,35 @@ public class DiscScript : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        particleSystem.Play();
-        
-        Debug.DrawRay(transform.position, forwardDirection, Color.blue);
-        
-        // Calculate the normal of the collision
-        Vector3 collisionNormal = col.contacts[0].normal;
-        
-        // Reflect the forward direction based on the collision normal
-        forwardDirection = Vector3.Reflect(forwardDirection, collisionNormal);
-        
-        // Normalize the direction to maintain consistent speed
-        forwardDirection.Normalize();
+		if(col.gameObject.tag == "Player")
+		{
+
+		}
+		else
+		{
+			if(canHit)
+			{
+				StartCoroutine(DelayHit());
+				particleSystem.Play();
+				
+				Debug.DrawRay(transform.position, forwardDirection, Color.blue);
+				
+				// Calculate the normal of the collision
+				Vector3 collisionNormal = col.contacts[0].normal;
+				
+				// Reflect the forward direction based on the collision normal
+				forwardDirection = Vector3.Reflect(forwardDirection, collisionNormal);
+				
+				// Normalize the direction to maintain consistent speed
+				forwardDirection.Normalize();
+			}
+		}
     }
 
     public void SetForwardDirection(Vector3 newForward)
     {
-        forwardDirection = newForward;
+		Vector3 rotatedForward = new Vector3(-newForward.x, newForward.y, -newForward.z);
+		forwardDirection = rotatedForward;
     }
 
     void OnTriggerEnter(Collider col)
@@ -54,4 +68,11 @@ public class DiscScript : MonoBehaviour
             print("out");
         }
     }
+
+	private IEnumerator DelayHit()
+	{
+		canHit = false;
+		yield return new WaitForSeconds(0.01f);
+		canHit = true;
+	}
 }

@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discRen: {fileID: 4589268062817905384}
-  discMat: {fileID: 0}
+  orangeDiscMat: {fileID: 2100000, guid: 1efa8cdde8509054092f4ab01cfffb74, type: 2}
 --- !u!1 &3956593439889573014
 GameObject:
   m_ObjectHideFlags: 0
