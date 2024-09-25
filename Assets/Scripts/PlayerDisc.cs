@@ -14,6 +14,8 @@ public class PlayerDisc : NetworkBehaviour
     private bool hasDisc = true;
 	private bool canThrow = true;
 
+
+
     void Update()
     {
         if (!IsOwner) return;
@@ -24,7 +26,7 @@ public class PlayerDisc : NetworkBehaviour
             {
 				if(disc == null)
 				{
-					handDisc.SetActive(false);
+					SetHandDiscStateServerRpc(false);
     	            SpawnDiscServerRpc(); // Call the RPC to spawn the disc
 	                hasDisc = false;
 					StartCoroutine(DelayInput());
@@ -50,7 +52,7 @@ public class PlayerDisc : NetworkBehaviour
             if (!hasDisc && disc != null && disc.inPlayerRange)
             {
                 RequestDespawnServerRpc(); // Call to request despawn on server
-                handDisc.SetActive(true);
+                SetHandDiscStateServerRpc(true);
                 hasDisc = true;
             }
         }
@@ -112,4 +114,17 @@ public class PlayerDisc : NetworkBehaviour
 		yield return new WaitForSeconds(1f);
 		canThrow = true;
 	}
+
+    [ServerRpc]
+    private void SetHandDiscStateServerRpc(bool state)
+    {
+        handDisc.SetActive(state);
+        UpdateHandDiscStateClientRpc(state);
+    }
+
+    [ClientRpc]
+    private void UpdateHandDiscStateClientRpc(bool state)
+    {
+        handDisc.SetActive(state);
+    }
 }
