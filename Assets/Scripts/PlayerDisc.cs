@@ -18,7 +18,7 @@ public class PlayerDisc : NetworkBehaviour
     {
         if(GameObject.FindGameObjectsWithTag("Player") != null)
         {
-            print("Im number two");
+            print("Im number two LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
         }
     }
 
@@ -115,7 +115,7 @@ public class PlayerDisc : NetworkBehaviour
     private IEnumerator CallBackDisc()
     {
         yield return new WaitForSeconds(callBackWaitTime);
-        handDisc.SetActive(true);
+        SetHandDiscStateServerRpc(true);
         hasDisc = true;
     }
 
