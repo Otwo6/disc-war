@@ -6,6 +6,7 @@ public class PlayerColorScript : MonoBehaviour
 {
     [SerializeField] Renderer discRen;
     [SerializeField] Material orangeDiscMat;
+	[SerializeField] Material orangeDiscTrailMat;
 
 	private bool isOrange = false;
 
@@ -25,11 +26,11 @@ public class PlayerColorScript : MonoBehaviour
 		{
 			disc.GetComponent<Renderer>().material = orangeDiscMat;
 			disc.GetComponentInChildren<ParticleSystemRenderer>().material = orangeDiscMat;
-			print("SHOULD CHANGEEEEEEEEEEEEEEEEE");
+			disc.GetComponentInChildren<TrailRenderer>().material = orangeDiscTrailMat;
 		}
 		else
 		{
-			print("FUCK YOUUUUUUUUUUUUUUUUUUUUUUUUU <3");
+			print("No change");
 		}
 	}
 }
